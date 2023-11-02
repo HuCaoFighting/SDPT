@@ -1,4 +1,4 @@
-# CPTFormer
+# SDPT
 
 
 ## Installation
