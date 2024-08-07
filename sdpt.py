@@ -1,24 +1,23 @@
-# ---------------------------------------------------------------
-# Copyright (c) 2022, Hu Cao. All rights reserved.
-# ---------------------------------------------------------------
+from os import sep
+from pickle import TRUE
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import math
-import warnings
 from functools import partial
+import math
+
 from timm.models.layers import DropPath, to_2tuple, trunc_normal_
 from timm.models.registry import register_model
 from timm.models.vision_transformer import _cfg
 
-from mmseg.models.builder import BACKBONES
-from mmcv.cnn import build_norm_layer
-from mmcv.runner import BaseModule
-from mmcv.cnn.bricks import DropPath
-from mmcv.cnn.utils.weight_init import (constant_init, normal_init,
-                                        trunc_normal_init)
+import numpy as np
 
-class Mlp(BaseModule):
+__all__ = [
+    'SDPT_tiny', 'SDPT_small', 'SDPT_base'
+]
+
+
+class Mlp(nn.Module):
     def __init__(self, in_features, hidden_features=None, out_features=None, ksize=3, act_layer=nn.Hardswish, drop=0.):
         super().__init__()
         out_features = out_features or in_features
@@ -38,8 +37,8 @@ class Mlp(BaseModule):
         x = self.act(x)
         x = self.fc2(x)
         return x.reshape(B, C, -1).permute(0,2,1).contiguous()
-
-class DWConv(BaseModule):
+    
+class DWConv(nn.Module):
     def __init__(self, dim=768):
         super(DWConv, self).__init__()
         self.dwconv = nn.Conv2d(dim, dim, 3, 1, 1, bias=True, groups=dim)
@@ -52,7 +51,7 @@ class DWConv(BaseModule):
 
         return x
 
-class h_sigmoid(BaseModule):
+class h_sigmoid(nn.Module):
     def __init__(self, inplace=True):
         super(h_sigmoid, self).__init__()
         self.relu = nn.ReLU6(inplace=inplace)
@@ -60,7 +59,7 @@ class h_sigmoid(BaseModule):
     def forward(self, x):
         return self.relu(x + 3) / 6
 
-class Attention(BaseModule):
+class Attention(nn.Module):
     def __init__(self, dim, num_heads=8, qkv_bias=False, qk_scale=None, attn_drop=0., proj_drop=0., pool=True):
         super().__init__()
         assert dim % num_heads == 0, f"dim {dim} should be divided by num_heads {num_heads}."
@@ -117,8 +116,7 @@ class Attention(BaseModule):
 
         return x
 
-
-class Block(BaseModule):
+class Block(nn.Module):
 
     def __init__(self, dim, num_heads, mlp_ratio=4., qkv_bias=False, qk_scale=None, drop=0., attn_drop=0.,
                  drop_path=0., act_layer=nn.GELU, norm_layer=nn.LayerNorm, pool=True):
@@ -142,8 +140,7 @@ class Block(BaseModule):
 
         return x
 
-
-class OverlapPatchEmbed(BaseModule):
+class OverlapPatchEmbed(nn.Module):
     """ Image to Patch Embedding
     """
 
@@ -177,7 +174,7 @@ def conv3x3(in_planes, out_planes, stride=1):
         nn.BatchNorm2d(out_planes)
     )
 
-class ConvStem(BaseModule):
+class ConvStem(nn.Module):
     """ Image to Patch Embedding
     """
 
@@ -228,23 +225,12 @@ class ConvStem(BaseModule):
 
         return x, H, W
 
-@BACKBONES.register_module()
-class SCPTVisionTransformer(BaseModule):
+class SDPTVisionTransformer(nn.Module):
     def __init__(self, img_size=224, patch_size=16, in_chans=3, num_classes=1000, embed_dims=[64, 128, 256, 512],
                  num_heads=[1, 2, 4, 8], mlp_ratios=[4, 4, 4, 4], qkv_bias=False, qk_scale=None, drop_rate=0.,
                  attn_drop_rate=0., drop_path_rate=0., norm_layer=nn.LayerNorm,
-                 depths=[3, 4, 6, 3], pool=[True, True, True, False], pretrained=None, init_cfg=None):
-        super(SCPTVisionTransformer, self).__init__(init_cfg=init_cfg)
-
-        assert not (init_cfg and pretrained), \
-            'init_cfg and pretrained cannot be set at the same time'
-        if isinstance(pretrained, str):
-            warnings.warn('DeprecationWarning: pretrained is deprecated, '
-                          'please use "init_cfg" instead')
-            self.init_cfg = dict(type='Pretrained', checkpoint=pretrained)
-        elif pretrained is not None:
-            raise TypeError('pretrained must be a str or None')
-
+                 depths=[3, 4, 6, 3], pool=[True, True, True, False]):
+        super().__init__()
         self.num_classes = num_classes
         self.depths = depths
 
@@ -292,46 +278,28 @@ class SCPTVisionTransformer(BaseModule):
         self.norm4 = norm_layer(embed_dims[3])
 
         # classification head
-        # self.head = nn.Linear(embed_dims[3], num_classes) if num_classes > 0 else nn.Identity()
+        self.head = nn.Linear(embed_dims[3], num_classes) if num_classes > 0 else nn.Identity()
 
-        # self.apply(self._init_weights)
+        self.apply(self._init_weights)
 
-    # def _init_weights(self, m):
+    def _init_weights(self, m):
 
-    #     if isinstance(m, nn.Linear):
-    #         trunc_normal_(m.weight, std=.02)
-    #         if isinstance(m, nn.Linear) and m.bias is not None:
-    #             nn.init.constant_(m.bias, 0)
-    #     elif isinstance(m, nn.LayerNorm):
-    #         nn.init.constant_(m.bias, 0)
-    #         nn.init.constant_(m.weight, 1.0)
-    #     elif isinstance(m, nn.BatchNorm2d):
-    #             m.weight.data.fill_(1)
-    #             m.bias.data.zero_()
-    #     elif isinstance(m, nn.Conv2d):
-    #         fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-    #         fan_out //= m.groups
-    #         m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
-    #         if m.bias is not None:
-    #             m.bias.data.zero_()
-
-    def init_weights(self):
-        print('init cfg', self.init_cfg)
-        if self.init_cfg is None:
-            for m in self.modules():
-                if isinstance(m, nn.Linear):
-                    trunc_normal_init(m, std=.02, bias=0.)
-                elif isinstance(m, nn.LayerNorm):
-                    constant_init(m, val=1.0, bias=0.)
-                elif isinstance(m, nn.Conv2d):
-                    fan_out = m.kernel_size[0] * m.kernel_size[
-                        1] * m.out_channels
-                    fan_out //= m.groups
-                    normal_init(
-                        m, mean=0, std=math.sqrt(2.0 / fan_out), bias=0)
-        else:
-
-            super(SCPTVisionTransformer, self).init_weights()
+        if isinstance(m, nn.Linear):
+            trunc_normal_(m.weight, std=.02)
+            if isinstance(m, nn.Linear) and m.bias is not None:
+                nn.init.constant_(m.bias, 0)
+        elif isinstance(m, nn.LayerNorm):
+            nn.init.constant_(m.bias, 0)
+            nn.init.constant_(m.weight, 1.0)
+        elif isinstance(m, nn.BatchNorm2d):
+                m.weight.data.fill_(1)
+                m.bias.data.zero_()
+        elif isinstance(m, nn.Conv2d):
+            fan_out = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
+            fan_out //= m.groups
+            m.weight.data.normal_(0, math.sqrt(2.0 / fan_out))
+            if m.bias is not None:
+                m.bias.data.zero_()
 
     def reset_drop_path(self, drop_path_rate):
         dpr = [x.item() for x in torch.linspace(0, drop_path_rate, sum(self.depths))]
@@ -403,56 +371,38 @@ class SCPTVisionTransformer(BaseModule):
 
     def forward(self, x):
         x, x_last = self.forward_features(x)
-        # x = x_last.mean(dim=1)
-        # x = self.head(x)
+        x = x_last.mean(dim=1)
+        x = self.head(x)
 
         return x
 
 
-# @register_model
-# class SCPT_lite(SCPTVisionTransformer):
-#     def __init__(self, **kwargs):
-#         super(SCPT_lite, self).__init__(
-#             patch_size=4, embed_dims=[32, 64, 160, 256], num_heads=[1, 2, 5, 8], mlp_ratios=[8, 8, 4, 4],
-#             qkv_bias=True, norm_layer=partial(nn.LayerNorm, eps=1e-6), depths=[2, 2, 2, 2], pool=[True, True, True, False],
-#             drop_rate=0.0, drop_path_rate=0.1)
+@register_model
+def SDPT_tiny(pretrained=False, **kwargs):
+    model = SDPTVisionTransformer(
+        patch_size=4, embed_dims=[32, 64, 160, 256], num_heads=[1, 2, 5, 8], mlp_ratios=[8, 8, 4, 4], qkv_bias=True,
+        norm_layer=partial(nn.LayerNorm, eps=1e-6), depths=[2, 2, 2, 2], pool=[True, True, True, False], 
+        drop_rate=0.0, drop_path_rate=0.1, **kwargs)
+    model.default_cfg = _cfg()
 
-# @register_model
-# class SCPT_tiny(SCPTVisionTransformer):
-#     def __init__(self, **kwargs):
-#         super(SCPT_tiny, self).__init__(
-#             patch_size=4, embed_dims=[64, 128, 320, 512], num_heads=[1, 2, 5, 8], mlp_ratios=[8, 8, 4, 4],
-#             qkv_bias=True, norm_layer=partial(nn.LayerNorm, eps=1e-6), depths=[2, 2, 2, 2], pool=[True, True, True, False],
-#             drop_rate=0.0, drop_path_rate=0.1)        
+    return model
 
-# @register_model
-# class SCPT_tiny(SCPTVisionTransformer):
-#     def __init__(self, **kwargs):
-#         super(SCPT_tiny, self).__init__(
-#             patch_size=4, embed_dims=[48, 96, 240, 384], num_heads=[1, 2, 5, 8], mlp_ratios=[8, 8, 4, 4],
-#             qkv_bias=True, norm_layer=partial(nn.LayerNorm, eps=1e-6), depths=[2, 2, 6, 3], pool=[True, True, True, False],
-#             drop_rate=0.0, drop_path_rate=0.1)  
+@register_model
+def SDPT_small(pretrained=False, **kwargs):
+    model = SDPTVisionTransformer(
+        patch_size=4, embed_dims=[48, 96, 240, 384], num_heads=[1, 2, 5, 8], mlp_ratios=[8, 8, 4, 4], qkv_bias=True,
+        norm_layer=partial(nn.LayerNorm, eps=1e-6), depths=[2, 2, 6, 3], pool=[True, True, True, False],
+        drop_rate=0.0, drop_path_rate=0.1, **kwargs)
+    model.default_cfg = _cfg()
 
-# @register_model
-# class SCPT_small(SCPTVisionTransformer):
-#     def __init__(self, **kwargs):
-#         super(SCPT_small, self).__init__(
-#             patch_size=4, embed_dims=[64, 128, 320, 512], num_heads=[1, 2, 5, 8], mlp_ratios=[8, 8, 4, 4],
-#             qkv_bias=True, norm_layer=partial(nn.LayerNorm, eps=1e-6), depths=[3, 4, 6, 3], pool=[True, True, True, False],
-#             drop_rate=0.0, drop_path_rate=0.1)
+    return model
 
-# @register_model
-# class SCPT_small(SCPTVisionTransformer):
-#     def __init__(self, **kwargs):
-#         super(SCPT_small, self).__init__(
-#             patch_size=4, embed_dims=[64, 128, 320, 512], num_heads=[1, 2, 5, 8], mlp_ratios=[8, 8, 4, 4],
-#             qkv_bias=True, norm_layer=partial(nn.LayerNorm, eps=1e-6), depths=[2, 2, 9, 3], pool=[True, True, True, False],
-#             drop_rate=0.0, drop_path_rate=0.1)
+@register_model
+def SDPT_base(pretrained=False, **kwargs):
+    model = SDPTVisionTransformer(
+        patch_size=4, embed_dims=[64, 128, 320, 512], num_heads=[1, 2, 5, 8], mlp_ratios=[8, 8, 4, 4], qkv_bias=True,
+        norm_layer=partial(nn.LayerNorm, eps=1e-6), depths=[2, 2, 9, 3], pool=[True, True, True, False],
+        drop_rate=0.0, drop_path_rate=0.1, **kwargs)
+    model.default_cfg = _cfg()
 
-# @register_model
-# class SCPT_base(SCPTVisionTransformer):
-#     def __init__(self, **kwargs):
-#         super(SCPT_base, self).__init__(
-#             patch_size=4, embed_dims=[64, 128, 320, 512], num_heads=[1, 2, 5, 8], mlp_ratios=[8, 8, 4, 4],
-#             qkv_bias=True, norm_layer=partial(nn.LayerNorm, eps=1e-6), depths=[3, 4, 18, 3], pool=[True, True, True, False],
-#             drop_rate=0.0, drop_path_rate=0.1)
+    return model
