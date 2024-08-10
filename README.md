@@ -1,14 +1,9 @@
-## [TPAMI22] Pyramid Pooling Transformer for Scene Understanding
+## [TITS2024] SDPT: Semantic-Aware Dimension-Pooling Transformer for Image Segmentation
 
-This is the official repository for Pyramid Pooling Transformer (P2T). This repository contains:
-
-* [x] Full code for training/test 
-* [x] Pretrained models in image classification, object detection, and semantic segmentation.
+This is the official repository for SDPT.
 
 Related links:
-[[Official PDF Download]](https://mmcheng.net/wp-content/uploads/2022/09/22TPAMI-P2T.pdf)
-[[中译版全文]](https://mmcheng.net/wp-content/uploads/2022/08/22PAMI_P2T_CN.pdf)
-[[5分钟中文解读]](https://mp.weixin.qq.com/s/7qXtyFaIiYny0eUqBbPraQ)
+[[Official PDF Download]](https://ieeexplore.ieee.org/document/10584449)
 
 ### Requirements:
 
@@ -16,21 +11,12 @@ Related links:
 * torchvision>=0.7.0+
 * timm>=0.3.2
 
-Validated on Torch 1.6/1.7/1.8, timm 0.3.2/0.4.12
-
 ### Introduction
 
-Pyramid pooling transformer (P2T) is a new generation backbone network,, benefiting many fundamental downstream vision tasks like object detection, semantic segmentation, and instance segmentation.
-
-Although pyramid pooling has demonstrated its power on many downstream tasks such as object detection (SPP) and semantic segmentation (PSPNet), it has not been explored on the backbone network, which serves a cornerstone for many downstream vision tasks. 
-P2T first bridges the gap between pyramid pooling and backbone network.
-The core idea is P2T is adapting pyramid pooling to the downsampling of the flatten sequences in computing the self-attention, 
-simultaneously reducing the sequence length and capturing powerful multi-scale contextual features.
-Pyramid pooling is also very efficient and will only induce negligible computational cost.
-
-In the experiments, P2T beats all the CNN/Transformer competitors such as ResNet, ResNeXt, Res2Net, PVT, Swin, Twins, and PVTv2, on image classification, semantic segmentation, object detection, and instance segmentation.
-
-<img src="figures/p2t-arch.jpg" width="500">
+In this work, we present the semanticaware dimension-pooling transformer (SDPT) to mitigate the conflict between accuracy and efficiency. The proposed model comprises an efficient transformer encoder for generating hierarchical
+features and a semantic-balanced decoder for predicting semantic masks. In the encoder, a dimension-pooling mechanism is used in the multi-head self-attention (MHSA) to reduce the computational cost, and a parallel depth-wise convolution is used
+to capture local semantics. Simultaneously, we further apply this dimension-pooling attention (DPA) to the decoder as a refinement module to integrate multi-level features. With such a simple yet powerful encoder-decoder framework, we empirically
+demonstrate that the proposed SDPT achieves excellent performance and efficiency on various popular benchmarks.
 
 ### Image Classification
 
