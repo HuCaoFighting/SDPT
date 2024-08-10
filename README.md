@@ -1,6 +1,6 @@
 ## [TITS2024] SDPT: Semantic-Aware Dimension-Pooling Transformer for Image Segmentation
 
-This is the official repository for SDPT.
+This is the official repository for SDPT. Our trained model is stored on the Huawei cloud. We do not have the right to send any files out from the internal system, so we can't share our trained model weights. 
 
 Related links:
 [[Official PDF Download]](https://ieeexplore.ieee.org/document/10584449)
@@ -20,14 +20,13 @@ demonstrate that the proposed SDPT achieves excellent performance and efficiency
 
 ### Image Classification
 
-|     Variants     | Input  Size    | Acc Top-1 | Acc Top-5 | #Params (M) | # GFLOPS | Google Drive |
+|     Variants     | Input  Size    | Acc Top-1 | Acc Top-5 | #Params (M) | # GFLOPS | Log |
 |:---------------:|:---------:|:-----:|:-----:|:-----------:|:-----------------:|-----------------|
-| P2T-Tiny   | 224 x 224 | 79.8 | 94.9 |    11.6    |    1.8    | [[weights]](https://drive.google.com/file/d/1x9EweWx77pXrHOCc7RJF3sYK2rht0_4m/view?usp=sharing)\|[[log]](https://drive.google.com/file/d/1CDofCg9pi0Cyiha_dIimggF228M5mOeH/view?usp=sharing) |
-| P2T-Small  | 224 x 224 |  82.4 | 96.0 |    24.1    |    3.7    | [[weights]](https://drive.google.com/file/d/1FlwhyVKw0zqj2mux248gIQFQ8DGPi8rS/view?usp=sharing)\|[[log]](https://drive.google.com/file/d/1bCZz7y0I0EEw74KaVg5iAr3hBYtSIEii/view?usp=sharing) |
-| P2T-Base | 224 x 224 |  83.5 | 96.6 |     36.2    |    6.5    |    [[weights]](https://drive.google.com/file/d/1iZoWexUTPUDSIZiJHNRt2zZl2kFj68F4/view?usp=sharing)\|[[log]](https://drive.google.com/file/d/13_XaX0XtYSzPatVl54ihFbEwflHLVvsl/view?usp=sharing)    |
-| P2T-Large | 224 x 224 | 83.9 | 96.7 | 54.5 | 9.8 | [[weights]](https://drive.google.com/file/d/13jBJ7ShDJd1juViC-zPtfLXYPRwkNfya/view?usp=sharing)\|[[log]](https://drive.google.com/file/d/1-RLjGzez-_O2_8obbXvUYGhWacPnqK1U/view?usp=sharing) |
+| P2T-Tiny   | 224 x 224 | 79.8 | 94.9 |    11.6    |    1.8    | [[log]](https://drive.google.com/file/d/1CDofCg9pi0Cyiha_dIimggF228M5mOeH/view?usp=sharing) |
+| P2T-Small  | 224 x 224 |  82.4 | 96.0 |    24.1    |    3.7    |[[log]](https://drive.google.com/file/d/1bCZz7y0I0EEw74KaVg5iAr3hBYtSIEii/view?usp=sharing) |
+| P2T-Base | 224 x 224 |  83.5 | 96.6 |     36.2    |    6.5    |   [[log]](https://drive.google.com/file/d/13_XaX0XtYSzPatVl54ihFbEwflHLVvsl/view?usp=sharing)    |
 
-All models are trained on ImageNet1K dataset. You can see all weights/logs at this url: [[Google Drive]](https://drive.google.com/drive/folders/1Osweqc1OphwtWONXIgD20q9_I2arT9yz?usp=sharing)
+All models are trained on ImageNet1K dataset. You can see all logs at this url: [[Google Drive]](https://drive.google.com/drive/folders/1Osweqc1OphwtWONXIgD20q9_I2arT9yz?usp=sharing)
 [BaiduPan, 提取码yhwu](https://pan.baidu.com/s/1JkE62CS9EoSTLW1M1Ajmxw?pwd=yhwu)
 
 
