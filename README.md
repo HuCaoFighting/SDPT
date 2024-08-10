@@ -47,22 +47,6 @@ The training and validation scripts can refer to the `segmentation` folder.
 
 BaiduPan download link: [BaiduPan, 提取码yhwu](https://pan.baidu.com/s/1JkE62CS9EoSTLW1M1Ajmxw?pwd=yhwu)
 
-### Object Detection
-
-Tested on the coco validation set
-
-
-| Base Model | Variants  |  AP  | AP@0.5 | AP@0.75 | #Params (M) | # GFLOPS |
-| :--------: | :-------: | :--: | :----: | :-----: | :---------: | :------: |
-| RetinaNet  | P2T-Tiny  | 41.3 |  62.0  |  44.1   |    21.1     |   206    |
-| RetinaNet  | P2T-Small | 44.4 |  65.3  |  47.6   |    33.8     |   260    |
-| RetinaNet  | P2T-Base  | 46.1 |  67.5  |  49.6   |    45.8     |   344    |
-| RetinaNet  | P2T-Large | 47.2 |  68.4  |  50.9   |    64.4     |   449    |
-
-Use this address to access all pretrained weights and logs: [[Google Drive]](https://drive.google.com/drive/folders/1fcg7n3Ga8cYoT-3Ar0PeQXjAC3AnQYyY?usp=sharing)
-
-BaiduPan download link: [BaiduPan, 提取码yhwu](https://pan.baidu.com/s/1JkE62CS9EoSTLW1M1Ajmxw?pwd=yhwu)
-
 
 ### Instance Segmentation 
 
