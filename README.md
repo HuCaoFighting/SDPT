@@ -13,21 +13,20 @@ Related links:
 
 ### Introduction
 
-In this work, we present the semanticaware dimension-pooling transformer (SDPT) to mitigate the conflict between accuracy and efficiency. The proposed model comprises an efficient transformer encoder for generating hierarchical
+In this work, we present the semantic-aware dimension-pooling transformer (SDPT) to mitigate the conflict between accuracy and efficiency. The proposed model comprises an efficient transformer encoder for generating hierarchical
 features and a semantic-balanced decoder for predicting semantic masks. In the encoder, a dimension-pooling mechanism is used in the multi-head self-attention (MHSA) to reduce the computational cost, and a parallel depth-wise convolution is used
 to capture local semantics. Simultaneously, we further apply this dimension-pooling attention (DPA) to the decoder as a refinement module to integrate multi-level features. With such a simple yet powerful encoder-decoder framework, we empirically
 demonstrate that the proposed SDPT achieves excellent performance and efficiency on various popular benchmarks.
 
 ### Image Classification
 
-|     Variants     | Input  Size    | Acc Top-1 | Acc Top-5 | #Params (M) | # GFLOPS | Log |
-|:---------------:|:---------:|:-----:|:-----:|:-----------:|:-----------------:|-----------------|
-| P2T-Tiny   | 224 x 224 | 79.8 | 94.9 |    11.6    |    1.8    | [[log]](https://drive.google.com/file/d/1CDofCg9pi0Cyiha_dIimggF228M5mOeH/view?usp=sharing) |
-| P2T-Small  | 224 x 224 |  82.4 | 96.0 |    24.1    |    3.7    |[[log]](https://drive.google.com/file/d/1bCZz7y0I0EEw74KaVg5iAr3hBYtSIEii/view?usp=sharing) |
-| P2T-Base | 224 x 224 |  83.5 | 96.6 |     36.2    |    6.5    |   [[log]](https://drive.google.com/file/d/13_XaX0XtYSzPatVl54ihFbEwflHLVvsl/view?usp=sharing)    |
+|     Variants     | Input  Size    | Acc Top-1  | #Params (M) | # GFLOPS | Log |
+|:---------------:|:---------:|:-----:|:-----------:|:-----------------:|-----------------|
+| SDPT-Tiny   | 224 x 224 | 71.9 |    3.2    |    0.6    | [[log]](https://drive.google.com/file/d/1CDofCg9pi0Cyiha_dIimggF228M5mOeH/view?usp=sharing) |
+| SDPT-Small  | 224 x 224 |  80.6 |   11.6    |    1.9    |[[log]](https://drive.google.com/file/d/1bCZz7y0I0EEw74KaVg5iAr3hBYtSIEii/view?usp=sharing) |
+| SDPT-Base | 224 x 224 |  82.7 |     24.1   |    3.9    |   [[log]](https://drive.google.com/file/d/13_XaX0XtYSzPatVl54ihFbEwflHLVvsl/view?usp=sharing)    |
 
 All models are trained on ImageNet1K dataset. You can see all logs at this url: [[Google Drive]](https://drive.google.com/drive/folders/1Osweqc1OphwtWONXIgD20q9_I2arT9yz?usp=sharing)
-[BaiduPan, 提取码yhwu](https://pan.baidu.com/s/1JkE62CS9EoSTLW1M1Ajmxw?pwd=yhwu)
 
 
 
