@@ -36,9 +36,9 @@ All models are trained on ImageNet1K dataset. You can see all logs at this url: 
 
  | Variants  | mIoU | #Params (M) | # GFLOPS |                         Log                       |
 | :-------: | :--:  | :------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
-  | P2T-Tiny  |39.4  |    3.6   |   5.7   | [[log]](https://drive.google.com/drive/folders/1SH9zmdGKvnpFBVU3dXS6-TZT04CZgkX9?usp=sharing) |
- | P2T-Small | 46.0  |   11.9   |   12.7   | [[log]](https://drive.google.com/drive/folders/1SH9zmdGKvnpFBVU3dXS6-TZT04CZgkX9?usp=sharing) |
- | P2T-Base  | 48.6   |    28.6  |   35.9   | [[log]](https://drive.google.com/drive/folders/1SH9zmdGKvnpFBVU3dXS6-TZT04CZgkX9?usp=sharing) |
+  | SDPT-Tiny  |39.4  |    3.6   |   5.7   | [[log]](https://drive.google.com/drive/folders/1SH9zmdGKvnpFBVU3dXS6-TZT04CZgkX9?usp=sharing) |
+ | SDPT-Small | 46.0  |   11.9   |   12.7   | [[log]](https://drive.google.com/drive/folders/1SH9zmdGKvnpFBVU3dXS6-TZT04CZgkX9?usp=sharing) |
+ | SDPT-Base  | 48.6   |    28.6  |   35.9   | [[log]](https://drive.google.com/drive/folders/1SH9zmdGKvnpFBVU3dXS6-TZT04CZgkX9?usp=sharing) |
 
 The training and validation scripts can refer to the `segmentation` folder.
 
@@ -52,8 +52,8 @@ Tested on the coco val set
 
 | Base Model | Variants  | APb  | APb@0.5 | APm  | APm@0.5 | #Params (M) | # GFLOPS |
 | :--------: | :-------: | :--: | :-----: | :--: | :-----: | :---------: | :------: |
-| Mask R-CNN | P2T-Small | 44.2 | 66.5   | 40.4 |  63.3   |    31.3    |   233   |
-| Mask R-CNN | P2T-Base  | 45.7 |  67.8  | 41.5 |  64.9   |    43.8    |   278   |
+| Mask R-CNN | SDPT-Small | 44.2 | 66.5   | 40.4 |  63.3   |    31.3    |   233   |
+| Mask R-CNN | SDPT-Base  | 45.7 |  67.8  | 41.5 |  64.9   |    43.8    |   278   |
 
 `APb` denotes AP box metric, and `APm` is the AP mask metric.
 
