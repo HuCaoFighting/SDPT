@@ -1,6 +1,6 @@
 ## [TITS2024] SDPT: Semantic-Aware Dimension-Pooling Transformer for Image Segmentation
 
-This is the official repository for SDPT. Our trained model is stored on the Huawei cloud. We do not have the right to send any files out from the internal system, so we can't share our trained model weights. 
+This is the official repository for SDPT. Our trained model is stored on the Huawei cloud. We do not have the right to send any files out from the internal system, so we can't share our trained model weights. I rewrote the codes and provided our log for your reference.
 
 Related links:
 [[Official PDF Download]](https://ieeexplore.ieee.org/document/10584449)
