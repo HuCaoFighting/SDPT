@@ -1,6 +1,6 @@
-## [TPAMI22] Pyramid Pooling Transformer for Scene Understanding
+## [TITS24] SDPT: Semantic-Aware Dimension-Pooling Transformer for Image Segmentation
 
-This folder contains full training and test code for semantic segmentation.
+This folder contains full training and test code for object detection and instance segmentation.
 
 ### Requirements
 
@@ -22,12 +22,11 @@ Tested on the coco validation set
 
 |  Base Model    | Variants  | AP | AP@0.5 | AP@0.75 | #Params (M) | # GFLOPS |
 | :--: | :-------: | :--: | :--: | :---------: | :------: | :----------------------------------------------------------: |
-| RetinaNet    | P2T-Tiny  | 41.3 | 62.0 |    44.1    |    21.1    |   206   |
-| RetinaNet  | P2T-Small | 44.4 | 65.3 |    47.6    |    33.8    |   260   |
-| RetinaNet  | P2T-Base  | 46.1 | 67.5 |    49.6    |    45.8    |   344    |
-| RetinaNet  | P2T-Large | 47.2 | 68.4 |    50.9    |    64.4    |   449   |
+| RetinaNet    | SDPT-Tiny  | 41.3 | 62.0 |    44.1    |    21.1    |   206   |
+| RetinaNet  | SDPT-Small | 44.4 | 65.3 |    47.6    |    33.8    |   260   |
+| RetinaNet  | SDPT-Base  | 46.1 | 67.5 |    49.6    |    45.8    |   344    |
 
-Use this address to access all pretrained weights and logs: [[Google Drive]](https://drive.google.com/drive/folders/1fcg7n3Ga8cYoT-3Ar0PeQXjAC3AnQYyY?usp=sharing)
+Use this address to access all logs: [[Google Drive]](https://drive.google.com/drive/folders/1fcg7n3Ga8cYoT-3Ar0PeQXjAC3AnQYyY?usp=sharing)
 
 ### Instance Segmentation 
 
@@ -36,20 +35,19 @@ Tested on the coco val set
 
 |  Base Model    | Variants  | APb | APb@0.5 | APm  | APm@0.5 | #Params (M) | # GFLOPS |
 | :--: | :-------: | :--: | :--: | :---------: | :------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
-| Mask R-CNN | P2T-Tiny  | 43.3 | 65.7 |    39.6    |    62.5    |    31.3     |   225   |
-| Mask R-CNN | P2T-Small | 45.5 | 67.7 |    41.4    |    64.6    |    43.7     |   279   |
-| Mask R-CNN | P2T-Base  | 47.2 | 69.3 |    42.7    |    66.1    |    55.7    |   363   |
-| Mask R-CNN | P2T-Large | 48.3 | 70.2 | 43.5 |    67.3    |    74.0    |   467   |
+| Mask R-CNN | SDPT-Tiny  | 43.3 | 65.7 |    39.6    |    62.5    |    31.3     |   225   |
+| Mask R-CNN | SDPT-Small | 45.5 | 67.7 |    41.4    |    64.6    |    43.7     |   279   |
+| Mask R-CNN | SDPT-Base  | 47.2 | 69.3 |    42.7    |    66.1    |    55.7    |   363   |
+| Mask R-CNN | SDPT-Large | 48.3 | 70.2 | 43.5 |    67.3    |    74.0    |   467   |
 
 `APb` denotes AP box metric, and `APm` is the AP mask metric.
 
-Use this address to access all pretrained weights and logs: [[Google Drive]](https://drive.google.com/drive/folders/1fcg7n3Ga8cYoT-3Ar0PeQXjAC3AnQYyY?usp=sharing)
+Use this address to access all logs: [[Google Drive]](https://drive.google.com/drive/folders/1fcg7n3Ga8cYoT-3Ar0PeQXjAC3AnQYyY?usp=sharing)
 
 
 ### Train
 
-Before training, please make sure you have `mmdetection==2.14` and downloaded the ImageNet-pretrained P2T weights from [[Google Drive]](https://drive.google.com/drive/folders/1Osweqc1OphwtWONXIgD20q9_I2arT9yz?usp=sharing) or
-[[BaiduPan, 提取码yhwu]](https://pan.baidu.com/s/1JkE62CS9EoSTLW1M1Ajmxw?pwd=yhwu). 
+Before training, please make sure you have `mmdetection==2.14` and the ImageNet-pretrained SDPT weights
 Put them to `pretrained/` folder.
 
 Use the following commands to train `Mask R-CNN` with `P2T-Tiny` backbone for distributed learning with 8 GPUs:
