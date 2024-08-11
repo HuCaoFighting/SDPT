@@ -38,7 +38,6 @@ Tested on the coco val set
 | Mask R-CNN | SDPT-Tiny  | 43.3 | 65.7 |    39.6    |    62.5    |    31.3     |   225   |
 | Mask R-CNN | SDPT-Small | 45.5 | 67.7 |    41.4    |    64.6    |    43.7     |   279   |
 | Mask R-CNN | SDPT-Base  | 47.2 | 69.3 |    42.7    |    66.1    |    55.7    |   363   |
-| Mask R-CNN | SDPT-Large | 48.3 | 70.2 | 43.5 |    67.3    |    74.0    |   467   |
 
 `APb` denotes AP box metric, and `APm` is the AP mask metric.
 
@@ -50,21 +49,21 @@ Use this address to access all logs: [[Google Drive]](https://drive.google.com/d
 Before training, please make sure you have `mmdetection==2.14` and the ImageNet-pretrained SDPT weights
 Put them to `pretrained/` folder.
 
-Use the following commands to train `Mask R-CNN` with `P2T-Tiny` backbone for distributed learning with 8 GPUs:
+Use the following commands to train `Mask R-CNN` with `SDPT-Tiny` backbone for distributed learning with 8 GPUs:
 
 ````
-bash dist_train.sh configs/mask_rcnn_p2t_t_fpn_1x_coco.py 8
+bash dist_train.sh configs/mask_rcnn_sdpt_t_fpn_1x_coco.py 8
 ````
 
 Other configs are on the `configs` directory.
 
 ### Validate
 
-Please download the pretrained model from [[Google Drive]](https://drive.google.com/drive/folders/1fcg7n3Ga8cYoT-3Ar0PeQXjAC3AnQYyY?usp=sharing) or [[BaiduPan, 提取码yhwu]](https://pan.baidu.com/s/1JkE62CS9EoSTLW1M1Ajmxw?pwd=yhwu). Put them to `pretrained` folder.
-Then, use the following commands to validate `Semantic FPN` with `P2T-Small` backbone in a single GPU:
+Put the pretrained model to `pretrained` folder.
+Then, use the following commands to validate the model in a single GPU:
 
 ````
-bash dist_test.sh configs/mask_rcnn_p2t_t_fpn_1x_coco.py pretrained/mask_rcnn_p2t_t_fpn_1x_coco-d875fa68.pth 1
+bash dist_test.sh configs/mask_rcnn_sdpt_t_fpn_1x_coco.py pretrained/mask_rcnn_sdpt_t_fpn_1x_coco-d875fa68.pth 1
 ````
 
 
@@ -72,7 +71,7 @@ bash dist_test.sh configs/mask_rcnn_p2t_t_fpn_1x_coco.py pretrained/mask_rcnn_p2
 
 If you meet any problems, please do not hesitate to contact us.
 Issues and discussions are welcome in the repository!
-You can also contact us via sending messages to this email: wuyuhuan@mail.nankai.edu.cn
+You can also contact us via sending messages to this email: hu.cao@tum.de
 
 
 
@@ -81,13 +80,16 @@ You can also contact us via sending messages to this email: wuyuhuan@mail.nankai
 If you are using the code/model/data provided here in a publication, please consider citing our works:
 
 ````
-@ARTICLE{wu2022p2t,
-  author={Wu, Yu-Huan and Liu, Yun and Zhan, Xin and Cheng, Ming-Ming},
-  journal={IEEE Transactions on Pattern Analysis and Machine Intelligence}, 
-  title={{P2T}: Pyramid Pooling Transformer for Scene Understanding}, 
-  year={2022},
-  doi = {10.1109/tpami.2022.3202765},
-}
+@ARTICLE{10584449,
+  author={Cao, Hu and Chen, Guang and Zhao, Hengshuang and Jiang, Dongsheng and Zhang, Xiaopeng and Tian, Qi and Knoll, Alois},
+  journal={IEEE Transactions on Intelligent Transportation Systems}, 
+  title={SDPT: Semantic-Aware Dimension-Pooling Transformer for Image Segmentation}, 
+  year={2024},
+  volume={},
+  number={},
+  pages={1-13},
+  keywords={Transformers;Image segmentation;Decoding;Task analysis;Semantics;Image edge detection;Computational efficiency;Image segmentation;vision transformer;dimension-pooling attention;semantic-balanced decoder;scene understanding},
+  doi={10.1109/TITS.2024.3417813}}
 ````
 
 ### License
