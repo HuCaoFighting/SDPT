@@ -15,35 +15,6 @@ Therefore, you can simply reproduce the result on newer GPUs.
 
 Put MS COCO dataset files to `data/coco/`.
 
-### Object Detection
-
-Tested on the coco validation set
-
-
-|  Base Model    | Variants  | AP | AP@0.5 | AP@0.75 | #Params (M) | # GFLOPS |
-| :--: | :-------: | :--: | :--: | :---------: | :------: | :----------------------------------------------------------: |
-| RetinaNet    | SDPT-Tiny  | 41.3 | 62.0 |    44.1    |    21.1    |   206   |
-| RetinaNet  | SDPT-Small | 44.4 | 65.3 |    47.6    |    33.8    |   260   |
-| RetinaNet  | SDPT-Base  | 46.1 | 67.5 |    49.6    |    45.8    |   344    |
-
-Use this address to access all logs: [[Google Drive]](https://drive.google.com/drive/folders/1fcg7n3Ga8cYoT-3Ar0PeQXjAC3AnQYyY?usp=sharing)
-
-### Instance Segmentation 
-
-Tested on the coco val set
-
-
-|  Base Model    | Variants  | APb | APb@0.5 | APm  | APm@0.5 | #Params (M) | # GFLOPS |
-| :--: | :-------: | :--: | :--: | :---------: | :------: | :----------------------------------------------------------: | :----------------------------------------------------------: |
-| Mask R-CNN | SDPT-Tiny  | 43.3 | 65.7 |    39.6    |    62.5    |    31.3     |   225   |
-| Mask R-CNN | SDPT-Small | 45.5 | 67.7 |    41.4    |    64.6    |    43.7     |   279   |
-| Mask R-CNN | SDPT-Base  | 47.2 | 69.3 |    42.7    |    66.1    |    55.7    |   363   |
-
-`APb` denotes AP box metric, and `APm` is the AP mask metric.
-
-Use this address to access all logs: [[Google Drive]](https://drive.google.com/drive/folders/1fcg7n3Ga8cYoT-3Ar0PeQXjAC3AnQYyY?usp=sharing)
-
-
 ### Train
 
 Before training, please make sure you have `mmdetection==2.14` and the ImageNet-pretrained SDPT weights
